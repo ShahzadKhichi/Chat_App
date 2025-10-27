@@ -20,7 +20,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [process.env.CLIENT_URL],
+    origin: ["https://skchat-fypy0112.b4a.run"],
     credentials: true,
   },
 });
@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL],
+    origin: ["https://skchat-fypy0112.b4a.run"],
     credentials: true,
   })
 );

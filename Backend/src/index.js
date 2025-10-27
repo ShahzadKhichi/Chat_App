@@ -33,6 +33,7 @@ export const getSocketIdByUserId = (userId) => {
 
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
+  if (!userId) return;
   socketMap[userId] = socket.id;
   io.emit("onlineUsers", Object.keys(socketMap));
   console.log(Object.keys(socketMap));

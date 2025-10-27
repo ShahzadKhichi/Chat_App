@@ -37,7 +37,7 @@ export const SideBar = () => {
       </div>
       <div className="h-full overflow-y-scroll">
         {otherUsers?.map((user) => {
-          user?._id !== profile._id ? (
+          user?._id !== profile?._id ? (
             <div
               key={user._id}
               onClick={() => {

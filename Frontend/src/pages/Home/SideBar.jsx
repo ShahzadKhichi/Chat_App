@@ -11,10 +11,14 @@ export const SideBar = () => {
   const profile = useSelector(({ userReducer }) => userReducer.userProfile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const socket = useSelector(({ socketReducer }) => socketReducer.socket);
+  const onlineUsers = useSelector(
+    ({ socketReducer }) => socketReducer.onlineUsers
+  );
   const token = useSelector(({ userReducer }) => userReducer.token);
   const handleLogout = async () => {
     const res = await dispatch(logoutUserThunk(token));
-
+    socket?.close();
     if (res?.payload?.success) {
       navigate("/login");
     }
@@ -32,23 +36,29 @@ export const SideBar = () => {
         </label>
       </div>
       <div className="h-full overflow-y-scroll">
-        {otherUsers?.map((user) => (
-          <div
-            key={user._id}
-            onClick={() => {
-              dispatch(setSelectedUser(user));
-            }}
-          >
-            <User
-              image={user?.avatar}
-              fullname={user?.fullname}
-              username={user?.username}
-            />
-          </div>
-        ))}
+        {otherUsers?.map((user) => {
+          user?._id !== profile._id ? (
+            <div
+              key={user._id}
+              onClick={() => {
+                dispatch(setSelectedUser(user));
+              }}
+            >
+              <User
+                status={onlineUsers?.includes(user._id) ? "online" : "offline"}
+                image={user?.avatar}
+                fullname={user?.fullname}
+                username={user?.username}
+              />
+            </div>
+          ) : (
+            <></>
+          );
+        })}
       </div>
       <div className="flex  items-center justify-between">
         <User
+          status={"online"}
           image={profile?.avatar}
           fullname={profile?.fullname}
           username={profile?.username}

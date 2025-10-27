@@ -4,15 +4,13 @@ import { useNavigate } from "react-router-dom";
 
 const LoginProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
-  const isAuthenticated = useSelector(
-    ({ userReducer }) => userReducer.isAuthenticated
-  );
+  const token = useSelector(({ userReducer }) => userReducer.token);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!token) {
       navigate("/login");
     }
-  }, [isAuthenticated]);
+  }, [token]);
   return children;
 };
 

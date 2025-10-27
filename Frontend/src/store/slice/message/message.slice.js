@@ -8,7 +8,11 @@ const intialState = {
 export const messageSlice = createSlice({
   name: "message",
   initialState: intialState,
-  reducers: {},
+  reducers: {
+    addNewMessage: (state, action) => {
+      state.messages.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     //send messege thunk
     builder.addCase(sendMessageThunk.pending, (state, action) => {
@@ -36,5 +40,5 @@ export const messageSlice = createSlice({
   },
 });
 
-export const {} = messageSlice.actions;
+export const { addNewMessage } = messageSlice.actions;
 export default messageSlice.reducer;

@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 const intialState = {
   token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
-  isAuthenticated: localStorage.getItem("token") ? true : false,
+  isAuthenticated: false,
   userProfile: null,
   otherUsers: [],
   buttonLoading: false,
@@ -32,7 +32,6 @@ export const userSlice = createSlice({
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
       localStorage.setItem("token", action.payload.token);
       state.token = action.payload.token;
-      state.isAuthenticated = true;
 
       state.userProfile = action.payload.user;
       state.buttonLoading = false;
@@ -48,7 +47,6 @@ export const userSlice = createSlice({
     builder.addCase(signupUserThunk.fulfilled, (state, action) => {
       localStorage.setItem("token", action.payload.token);
       state.token = action.payload.token;
-      state.isAuthenticated = true;
 
       state.userProfile = action.payload.user;
       state.buttonLoading = false;
@@ -70,6 +68,7 @@ export const userSlice = createSlice({
       state.userProfile = null;
       (state.selectedUser = null), (state.otherUsers = []);
       state.buttonLoading = false;
+
       toast.success("logout successfull");
     });
     builder.addCase(logoutUserThunk.rejected, (state, action) => {
@@ -81,6 +80,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(getUserProfieThunk.fulfilled, (state, action) => {
       state.userProfile = action.payload.user;
+      state.isAuthenticated = true;
       state.buttonLoading = false;
     });
     builder.addCase(getUserProfieThunk.rejected, (state, action) => {
@@ -95,6 +95,7 @@ export const userSlice = createSlice({
     builder.addCase(getOtherUsersThunk.fulfilled, (state, action) => {
       state.otherUsers = action.payload.users;
       state.buttonLoading = false;
+      state.isAuthenticated = true;
     });
     builder.addCase(getOtherUsersThunk.rejected, (state, action) => {
       state.buttonLoading = false;

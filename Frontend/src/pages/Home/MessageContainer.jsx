@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 
 const MessageContainer = () => {
   const dispatch = useDispatch();
+
   const [message, setMessage] = useState("");
 
   const selectedUser = useSelector(

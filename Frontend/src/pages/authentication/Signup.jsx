@@ -1,20 +1,28 @@
 import React, { useState } from "react";
 import { FaEye, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { signupUserThunk } from "../../store/slice/user/user.thunk";
+import { useDispatch } from "react-redux";
 
 export const Signup = () => {
+  const dispatch = useDispatch();
   const [singupData, setSingupData] = useState({
     fullname: "",
     username: "",
     password: "",
     confirmPassword: "",
+    gender: "male",
   });
-
+  console.log(singupData);
   const handleInputChange = (e) => {
     setSingupData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleSignup = () => {
+    dispatch(signupUserThunk(singupData));
   };
   return (
     <div className="flex   flex-col  justify-center items-center h-screen">
@@ -26,7 +34,7 @@ export const Signup = () => {
             <input
               onChange={handleInputChange}
               type="text"
-              name="fulname"
+              name="fullname"
               required
               placeholder="Full Name"
               pattern="[A-Za-z][A-Za-z0-9\-]*"
@@ -106,7 +114,37 @@ export const Signup = () => {
             At least one uppercase letter
           </p>
         </div>
-        <button className="btn btn-primary">Signup</button>
+        <div className="flex flex-col gap-2 ">
+          <h2 className="w-full text-center text-primary text-2xl font-bold">
+            {" "}
+            Gender
+          </h2>
+          <div className="flex gap-2">
+            <input
+              onChange={handleInputChange}
+              type="radio"
+              value={"male"}
+              name="gender"
+              className="radio radio-primary"
+              defaultChecked
+            />
+            <label>male{}</label>
+          </div>
+          <div className="flex gap-2">
+            <input
+              onChange={handleInputChange}
+              type="radio"
+              name="gender"
+              value={"female"}
+              className="radio radio-primary"
+            />
+            <label>female</label>
+          </div>
+        </div>
+
+        <button className="btn btn-primary" onClick={handleSignup}>
+          Signup
+        </button>
         <p className="flex gap-1">
           Already have an account?
           <Link to={"/login"} className=" text-blue-400 underline">

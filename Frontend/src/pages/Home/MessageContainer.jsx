@@ -51,11 +51,11 @@ const MessageContainer = () => {
         <Message />
         <Message />
       </div>
-      <div className="p-3 flex gap-1">
+      <div className="p-6 flex gap-1">
         <input
           type="text"
           placeholder="Type here ..."
-          className="input input-bordered input-primary w-full"
+          className="input input-bordered input-primary w-full "
         />
         <button className="btn btn-square btn-primary w-[60px] ">
           <IoSend />

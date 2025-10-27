@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { FaEye, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
+import { loginUserThunk } from "../../store/slice/user/user.thunk";
+
 const Login = () => {
+  const dipatch = useDispatch();
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
@@ -12,6 +18,10 @@ const Login = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleLogin = () => {
+    dipatch(loginUserThunk(loginData));
   };
 
   return (
@@ -40,7 +50,7 @@ const Login = () => {
           </p>
         </div>
         <div>
-          <label className=" w-full flex justify-center items-center  input validator">
+          <label className=" w-full flex justify-center items-center  input ">
             <FaEye className="text-gray-500" />
             <input
               onChange={handleInputChange}
@@ -61,7 +71,9 @@ const Login = () => {
             At least one uppercase letter
           </p>
         </div>
-        <button className="btn btn-primary">Login</button>
+        <button className="btn btn-primary" onClick={handleLogin}>
+          Login
+        </button>
         <p className="flex gap-1">
           Don't have an account?
           <Link to={"/signup"} className=" text-blue-400 underline">

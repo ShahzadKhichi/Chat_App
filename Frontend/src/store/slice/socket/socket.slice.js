@@ -10,7 +10,7 @@ export const socketSlice = createSlice({
   initialState: intialState,
   reducers: {
     initializeSocket: (state, action) => {
-      state.socket = io(import.meta.env.VITE_BASE_URL_SOCKET, {
+      state.socket = io("https://kchat-chdaa7q1.b4a.run", {
         query: { userId: action.payload },
       });
     },

@@ -105,5 +105,10 @@ export const getProfile = asyncHandler(async (req, res, next) => {
 export const getOtherUsers = asyncHandler(async (req, res, next) => {
   const userId = req.userId;
   const users = await User.find({ _id: { $ne: userId } }).select("-password");
-  res.status(200).json({ success: true, users });
+  res
+    .status(200)
+    .json({
+      success: true,
+      users: users.filter((user) => user._id != req.userId),
+    });
 });

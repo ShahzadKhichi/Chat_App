@@ -30,6 +30,7 @@ export { io };
 export const getSocketIdByUserId = (userId) => {
   return socketMap[userId];
 };
+
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
   socketMap[userId] = socket.id;
@@ -39,7 +40,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     delete socketMap[userId];
     console.log(Object.keys(socketMap));
-    io.emit("onlineUsers", Object.keys(socketMap));
   });
 });
 

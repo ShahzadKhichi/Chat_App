@@ -37,19 +37,21 @@ export const SideBar = () => {
       </div>
       <div className="h-full overflow-y-scroll">
         {otherUsers?.map((user) => {
-          <div
-            key={user._id}
-            onClick={() => {
-              dispatch(setSelectedUser(user));
-            }}
-          >
-            <User
-              status={onlineUsers?.includes(user._id) ? "online" : "offline"}
-              image={user?.avatar}
-              fullname={user?.fullname}
-              username={user?.username}
-            />
-          </div>;
+          return (
+            <div
+              key={user._id}
+              onClick={() => {
+                dispatch(setSelectedUser(user));
+              }}
+            >
+              <User
+                status={onlineUsers?.includes(user._id) ? "online" : "offline"}
+                image={user?.avatar}
+                fullname={user?.fullname}
+                username={user?.username}
+              />
+            </div>
+          );
         })}
       </div>
       <div className="flex  items-center justify-between">

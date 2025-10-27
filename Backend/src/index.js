@@ -55,7 +55,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/message", messageRouter);
 app.use(errorMiddleware);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log("Server is listening on port: " + PORT);
 });

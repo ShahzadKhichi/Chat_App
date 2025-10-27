@@ -25,8 +25,22 @@ const io = new Server(server, {
   },
 });
 
+const socketMap = {};
+export { io };
+export const getSocketIdByUserId = (userId) => {
+  return socketMap[userId];
+};
 io.on("connection", (socket) => {
-  console.log("New client connected: " + socket.id);
+  const userId = socket.handshake.query.userId;
+  socketMap[userId] = socket.id;
+  io.emit("onlineUsers", Object.keys(socketMap));
+  console.log(Object.keys(socketMap));
+
+  socket.on("disconnect", () => {
+    delete socketMap[userId];
+    console.log(Object.keys(socketMap));
+    io.emit("onlineUsers", Object.keys(socketMap));
+  });
 });
 
 app.use(

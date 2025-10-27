@@ -3,6 +3,7 @@ import Message from "../Models/message.model.js";
 import Conversation from "../Models/conversation.model.js";
 import { asyncHandler } from "../utilities/asyncHandler.utility.js";
 import { errorHandler } from "../utilities/errorHandler.utility.js";
+import { io, getSocketIdByUserId } from "../index.js";
 
 export const sendMessage = asyncHandler(async (req, res, next) => {
   const { message } = req.body;
@@ -30,6 +31,8 @@ export const sendMessage = asyncHandler(async (req, res, next) => {
   await conversation.save();
 
   //socket.io logic
+
+  io.to(getSocketIdByUserId(receiverId))?.emit("newMessage", newMessage);
 
   res.status(201).json({
     success: true,

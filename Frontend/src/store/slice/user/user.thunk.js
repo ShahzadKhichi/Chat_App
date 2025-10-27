@@ -41,3 +41,69 @@ export const signupUserThunk = createAsyncThunk(
     }
   }
 );
+
+export const logoutUserThunk = createAsyncThunk(
+  "user/logoutUserThunk",
+  async (token, { rejectWithValue }) => {
+    try {
+      const res = await instance.post(
+        "/user/logout",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      console.error(error?.response?.data?.errMessage);
+      toast.error(error?.response?.data?.errMessage);
+      rejectWithValue(error?.response?.data?.errMessage);
+    }
+  }
+);
+
+export const getUserProfieThunk = createAsyncThunk(
+  "user/getUserProfieThunk",
+  async (token, { rejectWithValue }) => {
+    try {
+      const res = await instance.get(
+        "/user/profile",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      console.error(error?.response?.data?.errMessage);
+      toast.error(error?.response?.data?.errMessage);
+      rejectWithValue(error?.response?.data?.errMessage);
+    }
+  }
+);
+
+export const getOtherUsersThunk = createAsyncThunk(
+  "user/getOtherUsersThunk",
+  async (token, { rejectWithValue }) => {
+    try {
+      const res = await instance.get(
+        "/user/others",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      console.error(error?.response?.data?.errMessage);
+      toast.error(error?.response?.data?.errMessage);
+      rejectWithValue(error?.response?.data?.errMessage);
+    }
+  }
+);

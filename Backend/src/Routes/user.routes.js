@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getOtherUsers,
   getProfile,
   login,
   logout,
@@ -12,6 +13,7 @@ const userRouter = express.Router();
 userRouter.post("/signup", signup);
 userRouter.post("/login", login);
 userRouter.post("/logout", authMiddleware, logout);
-userRouter.get("/get-profile", authMiddleware, getProfile);
+userRouter.get("/profile", authMiddleware, getProfile);
+userRouter.get("/others", authMiddleware, getOtherUsers);
 
 export default userRouter;

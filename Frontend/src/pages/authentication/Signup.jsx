@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { FaEye, FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signupUserThunk } from "../../store/slice/user/user.thunk";
 import { useDispatch } from "react-redux";
 
 export const Signup = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [singupData, setSingupData] = useState({
     fullname: "",
@@ -13,7 +14,7 @@ export const Signup = () => {
     confirmPassword: "",
     gender: "male",
   });
-  console.log(singupData);
+
   const handleInputChange = (e) => {
     setSingupData((prev) => ({
       ...prev,
@@ -21,15 +22,18 @@ export const Signup = () => {
     }));
   };
 
-  const handleSignup = () => {
-    dispatch(signupUserThunk(singupData));
+  const handleSignup = async () => {
+    const res = await dispatch(signupUserThunk(singupData));
+    if (res?.payload?.success) {
+      navigate("/");
+    }
   };
   return (
     <div className="flex   flex-col  justify-center items-center h-screen">
       <div className="flex flex-col  w-[90%] md:w-[500px] gap-10 p-6 border-2 border-gray-700 rounded-xl">
         <h2 className="text-center font-bold text-2xl">Signup</h2>
         <div>
-          <label className=" w-full flex justify-center items-center input validator">
+          <label className=" w-full flex justify-center items-center input ">
             <FaUser className="text-gray-500" />
             <input
               onChange={handleInputChange}
@@ -43,14 +47,9 @@ export const Signup = () => {
               title="Only letters, numbers or dash"
             />
           </label>
-          <p className="validator-hint hidden">
-            Must be 3 to 30 characters
-            <br />
-            containing only letters, numbers or dash
-          </p>
         </div>
         <div>
-          <label className=" w-full flex justify-center items-center input validator">
+          <label className=" w-full flex justify-center items-center input ">
             <FaUser className="text-gray-500" />
             <input
               onChange={handleInputChange}
@@ -64,14 +63,9 @@ export const Signup = () => {
               title="Only letters, numbers or dash"
             />
           </label>
-          <p className="validator-hint hidden">
-            Must be 3 to 30 characters
-            <br />
-            containing only letters, numbers or dash
-          </p>
         </div>
         <div>
-          <label className=" w-full flex justify-center items-center  input validator">
+          <label className=" w-full flex justify-center items-center  input ">
             <FaEye className="text-gray-500" />
             <input
               onChange={handleInputChange}
@@ -79,21 +73,11 @@ export const Signup = () => {
               type="password"
               required
               placeholder="Password"
-              minlength="8"
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-              title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
             />
           </label>
-          <p className="validator-hint hidden">
-            Must be more than 8 characters, including
-            <br />
-            At least one number <br />
-            At least one lowercase letter <br />
-            At least one uppercase letter
-          </p>
         </div>
         <div>
-          <label className=" w-full flex justify-center items-center  input validator">
+          <label className=" w-full flex justify-center items-center  input ">
             <FaEye className="text-gray-500" />
             <input
               onChange={handleInputChange}
@@ -101,46 +85,34 @@ export const Signup = () => {
               type="password"
               required
               placeholder="confirm password"
-              minlength="8"
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-              title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
             />
           </label>
-          <p className="validator-hint hidden">
-            Must be more than 8 characters, including
-            <br />
-            At least one number <br />
-            At least one lowercase letter <br />
-            At least one uppercase letter
-          </p>
         </div>
-        <div className="flex flex-col gap-2 ">
-          <h2 className="w-full text-center text-primary text-2xl font-bold">
-            {" "}
-            Gender
-          </h2>
-          <div className="flex gap-2">
-            <input
-              onChange={handleInputChange}
-              type="radio"
-              value={"male"}
-              name="gender"
-              className="radio radio-primary"
-              defaultChecked
-            />
-            <label>male{}</label>
+        <label className="w-full flex  items-center input">
+          <div className="flex  gap-2 ">
+            <div className="flex gap-2">
+              <input
+                onChange={handleInputChange}
+                type="radio"
+                value={"male"}
+                name="gender"
+                className="radio radio-primary"
+                defaultChecked
+              />
+              <label>male{}</label>
+            </div>
+            <div className="flex gap-2">
+              <input
+                onChange={handleInputChange}
+                type="radio"
+                name="gender"
+                value={"female"}
+                className="radio radio-primary"
+              />
+              <label>female</label>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <input
-              onChange={handleInputChange}
-              type="radio"
-              name="gender"
-              value={"female"}
-              className="radio radio-primary"
-            />
-            <label>female</label>
-          </div>
-        </div>
+        </label>
 
         <button className="btn btn-primary" onClick={handleSignup}>
           Signup

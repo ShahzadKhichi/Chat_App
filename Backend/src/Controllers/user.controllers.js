@@ -49,7 +49,7 @@ export const signup = asyncHandler(async (req, res, next) => {
       success: true,
       message: "User registered successfully",
       token,
-      newUser,
+      user: newUser,
     });
 });
 
@@ -100,4 +100,10 @@ export const getProfile = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({ success: true, user });
+});
+
+export const getOtherUsers = asyncHandler(async (req, res, next) => {
+  const userId = req.userId;
+  const users = await User.find({ _id: { $ne: userId } }).select("-password");
+  res.status(200).json({ success: true, users });
 });

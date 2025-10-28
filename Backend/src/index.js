@@ -20,8 +20,7 @@ const server = http.createServer(app);
 // ---------- Socket.IO ----------
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:5000",
-    methods: ["GET", "POST"],
+    origin: "https://k-chats.netlify.app",
     credentials: true,
   },
 });
@@ -46,7 +45,7 @@ io.on("connection", (socket) => {
 // ---------- Express middlewares ----------
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5000",
+    origin: "https://k-chats.netlify.app",
     credentials: true,
   })
 );

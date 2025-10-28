@@ -13,6 +13,9 @@ const MessageContainer = () => {
   const dispatch = useDispatch();
 
   const [message, setMessage] = useState("");
+  const onlineUsers = useSelector(
+    ({ socketReducer }) => socketReducer.onlineUsers
+  );
 
   const selectedUser = useSelector(
     ({ userReducer }) => userReducer.selectedUser
@@ -43,6 +46,7 @@ const MessageContainer = () => {
         <>
           <div className="p-3 border-b border-b-white/10">
             <User
+              status={onlineUsers?.includes(selectedUser?._id) ? true : false}
               image={selectedUser?.avatar}
               fullname={selectedUser?.fullname}
               username={selectedUser?.username}

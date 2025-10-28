@@ -10,7 +10,7 @@ export const socketSlice = createSlice({
   initialState: intialState,
   reducers: {
     initializeSocket: (state, action) => {
-      state.socket = io("https://kchat-vm22w4g5.b4a.run", {
+      state.socket = io("http://localhost:3000", {
         query: { userId: action.payload },
       });
     },

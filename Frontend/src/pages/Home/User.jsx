@@ -6,7 +6,7 @@ const User = ({ image, fullname, username, status }) => {
   return (
     <div className="flex items-center gap-5 m-1 p-2 border-2 border-[#1D232A] transition-all duration-200 hover:border-[#7480ff] cursor-pointer rounded-2xl active:scale-95">
       {" "}
-      <div className={`avatar avatar-${status} `}>
+      <div className={`avatar ${status ? "avatar-online" : "offline"}`}>
         <div className="w-16 rounded-full">
           <img src={image} />
         </div>

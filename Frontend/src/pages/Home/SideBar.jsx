@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React, { use, useEffect } from "react";
 import { IoSearch } from "react-icons/io5";
 import User from "./User";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +45,7 @@ export const SideBar = () => {
               }}
             >
               <User
-                status={onlineUsers?.includes(user._id) ? "online" : "offline"}
+                status={onlineUsers?.includes(user._id) ? true : false}
                 image={user?.avatar}
                 fullname={user?.fullname}
                 username={user?.username}
@@ -56,7 +56,7 @@ export const SideBar = () => {
       </div>
       <div className="flex  items-center justify-between">
         <User
-          status={"online"}
+          status={true}
           image={profile?.avatar}
           fullname={profile?.fullname}
           username={profile?.username}

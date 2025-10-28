@@ -1,62 +1,65 @@
 import dotenv from "dotenv";
 import http from "http";
 import { Server } from "socket.io";
-dotenv.config();
-
-import connectDB from "./DB/dbConfig.js";
-
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { errorMiddleware } from "./Middlewares/error.middleware.js";
 
-//routers
+import connectDB from "./DB/dbConfig.js";
+import { errorMiddleware } from "./Middlewares/error.middleware.js";
 import userRouter from "./Routes/user.routes.js";
 import messageRouter from "./Routes/message.routes.js";
-console.log(process.env.CLIENT_URL);
-connectDB();
-const app = express();
 
+dotenv.config();
+
+connectDB();
+
+const app = express();
 const server = http.createServer(app);
+
+// ---------- Socket.IO ----------
 const io = new Server(server, {
   cors: {
-    origin: ["https://skchat-fypy0112.b4a.run"],
+    origin: process.env.CLIENT_URL || "http://localhost:5000",
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
 const socketMap = {};
 export { io };
-export const getSocketIdByUserId = (userId) => {
-  return socketMap[userId];
-};
+export const getSocketIdByUserId = (userId) => socketMap[userId];
 
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
   if (!userId) return;
+
   socketMap[userId] = socket.id;
   io.emit("onlineUsers", Object.keys(socketMap));
-  console.log(Object.keys(socketMap));
 
   socket.on("disconnect", () => {
     delete socketMap[userId];
-    console.log(Object.keys(socketMap));
+    io.emit("onlineUsers", Object.keys(socketMap));
   });
 });
 
+// ---------- Express middlewares ----------
 app.use(
   cors({
-    origin: ["https://skchat-fypy0112.b4a.run"],
+    origin: process.env.CLIENT_URL || "http://localhost:5000",
     credentials: true,
   })
 );
 app.use(express.json());
 app.use(cookieParser());
+
+// ---------- API routes ----------
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/message", messageRouter);
+
+// ---------- Global error handler ----------
 app.use(errorMiddleware);
 
-const PORT = process.env.PORT || 4000;
-server.listen(PORT, () => {
-  console.log("Server is listening on port: " + PORT);
-});
+// ---------- Start ----------
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Backend API on port ${PORT}`));
